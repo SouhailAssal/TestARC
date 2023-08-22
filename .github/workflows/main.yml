@@ -1,0 +1,12 @@
+name: Test Workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-sut:
+    runs-on: [Windows,vtt-arc]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
