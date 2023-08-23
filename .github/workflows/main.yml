@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-sut:
-    runs-on: [Windows,canoe-arc]
+    runs-on: [Windows,vtt-arc]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
