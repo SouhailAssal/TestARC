@@ -10,3 +10,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: check Canoe version
+        shell: powershell
+        run: canoe4sw-se.exe --version
