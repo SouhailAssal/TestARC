@@ -8,9 +8,9 @@ jobs:
   vtt:
     runs-on: [Windows,vtt-arc]
     steps:
-      - name: check vtt version
+      - name: check vtt help
         shell: powershell
-        run: vttmake --version
+        run: vttmake help
           
   testunitbuildcli:
     needs: vtt
