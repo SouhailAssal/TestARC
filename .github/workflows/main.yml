@@ -13,7 +13,6 @@ jobs:
         run: vttmake help
           
   testunitbuildcli:
-    needs: vtt
     runs-on: [Windows,testunitbuildcli-arc]
     steps:
       - name: check testunitbuildcli version
@@ -21,7 +20,6 @@ jobs:
         run: TestUnitBuildCLI.exe --version
         
   canoe:
-    needs: testunitbuildcli
     runs-on: [Windows,canoe-arc]
     steps:
       - name: check Canoe version
@@ -29,7 +27,6 @@ jobs:
         run: canoe4sw-se.exe --version
        
   testreportviewer:
-    needs: canoe
     runs-on: [Windows,testreportviewer-arc]
     steps:
       - name: check testreportviewer help
