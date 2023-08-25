@@ -5,30 +5,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  canoe:
-    runs-on: [Windows,canoe-arc]
-    steps:
-      - name: check Canoe version
-        shell: powershell
-        run: canoe4sw-se.exe --version
-
   vtt:
     runs-on: [Windows,vtt-arc]
     steps:
       - name: check vtt version
         shell: powershell
         run: vttmake --version
-
+          
   testunitbuildcli:
+    needs: vtt
     runs-on: [Windows,testunitbuildcli-arc]
     steps:
       - name: check testunitbuildcli version
         shell: powershell
         run: TestUnitBuildCLI.exe --version
         
+  canoe:
+    needs: testunitbuildcli
+    runs-on: [Windows,canoe-arc]
+    steps:
+      - name: check Canoe version
+        shell: powershell
+        run: canoe4sw-se.exe --version
+       
   testreportviewer:
+    needs: canoe
     runs-on: [Windows,testreportviewer-arc]
     steps:
-      - name: check testreportviewer version
+      - name: check testreportviewer help
         shell: powershell
-        run: ReportViewerCli --version
+        run: ReportViewerCli -h
