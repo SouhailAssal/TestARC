@@ -5,11 +5,30 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-sut:
-    runs-on: [Windows,vtt-arc]
+  canoe:
+    runs-on: [Windows,canoe-arc]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
       - name: check Canoe version
         shell: powershell
         run: canoe4sw-se.exe --version
+
+  vtt:
+    runs-on: [Windows,vtt-arc]
+    steps:
+      - name: check vtt version
+        shell: powershell
+        run: vttmake --version
+
+  testunitbuildcli:
+    runs-on: [Windows,testunitbuildcli-arc]
+    steps:
+      - name: check testunitbuildcli version
+        shell: powershell
+        run: TestUnitBuildCLI.exe --version
+        
+  testreportviewer:
+    runs-on: [Windows,testreportviewer-arc]
+    steps:
+      - name: check testreportviewer version
+        shell: powershell
+        run: ReportViewerCli --version
