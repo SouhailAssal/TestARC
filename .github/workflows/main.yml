@@ -7,7 +7,7 @@ on:
 jobs:
 
   canoe:
-    runs-on: canoe-16.4.4
+    runs-on: canoe-17.3.91
     steps:
       - name: check Canoe version
         shell: powershell
