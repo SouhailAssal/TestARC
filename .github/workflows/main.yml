@@ -13,5 +13,5 @@ jobs:
         shell: powershell
         run: canoe4sw-se.exe --version
       - name: Sleep for 20 seconds using PowerShell
-        run: Start-Sleep -Seconds 20
+        run: Start-Sleep -Seconds 300
         shell: powershell
