@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: check vtt version
         shell: powershell
-        run: vttmake --version
+        run: vttmake help
       - name: Sleep for 60 seconds using PowerShell
         run: Start-Sleep -Seconds 60
         shell: powershell
