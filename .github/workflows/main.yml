@@ -12,6 +12,16 @@ jobs:
       - name: check Canoe version
         shell: powershell
         run: canoe4sw-se.exe --version
-      - name: Sleep for 20 seconds using PowerShell
-        run: Start-Sleep -Seconds 300
+      - name: Sleep for 60 seconds using PowerShell
+        run: Start-Sleep -Seconds 60
+        shell: powershell
+
+  vtt:
+    runs-on: vtt-6.3.56
+    steps:
+      - name: check vtt version
+        shell: powershell
+        run: vttmake --version
+      - name: Sleep for 60 seconds using PowerShell
+        run: Start-Sleep -Seconds 60
         shell: powershell
