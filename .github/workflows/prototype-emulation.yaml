@@ -53,10 +53,6 @@ jobs:
         run : ls ./BSW-Emulation/FanControlECU/FanControl_VTT/SUT
           
   compile-tests:
-<<<<<<< HEAD:.github/workflows/prototype-emulation.yaml
-=======
-    needs: build-sut
->>>>>>> b19a87c3d59aceaeca8c1263a19c5175b60f2729:.github/workflows/main.yaml
     runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
@@ -78,11 +74,7 @@ jobs:
 
           
   compile-simulation:
-<<<<<<< HEAD:.github/workflows/prototype-emulation.yaml
-    needs: [compile-tests, build-sut]
-=======
     needs: compile-tests
->>>>>>> b19a87c3d59aceaeca8c1263a19c5175b60f2729:.github/workflows/main.yaml
     runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
