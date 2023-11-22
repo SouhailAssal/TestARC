@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-sut:
-    runs-on: [Windows,vtt-6.3]
+    runs-on: vtt-6.3.56
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -43,7 +43,7 @@ jobs:
           
   compile-tests:
     needs: build-sut
-    runs-on: [Windows,testunitbuild-cli-7.4]
+    runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -64,7 +64,7 @@ jobs:
           
   compile-simulation:
     needs: compile-tests
-    runs-on: [Windows,canoe4sw-16.4]
+    runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -114,7 +114,7 @@ jobs:
  
   run-tests-simulation:
     needs: compile-simulation
-    runs-on: [Windows,canoe4sw-16.4]
+    runs-on: canoe-17.3.91
     strategy:
       matrix:
         TESTNAME: [auto.vtestunit, basic.vtestunit]
@@ -179,7 +179,7 @@ jobs:
   display-test-report:
     if: ${{ !cancelled() }}
     needs: run-tests-simulation
-    runs-on: [Windows,testReportViewer-16.3]
+    runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
