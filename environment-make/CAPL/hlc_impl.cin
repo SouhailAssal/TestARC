@@ -1,5 +1,0 @@
-/*@!Encoding:1252*/
-variables
-{
-  enum implementation_types implementation = CAPL;
-}

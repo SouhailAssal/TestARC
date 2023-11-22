@@ -1,0 +1,26 @@
+/*@!Encoding:1252*/
+includes
+{
+  
+}
+
+variables
+{
+  
+}
+
+on sysvar_update sysvar::TestInterface::mapped_AdcPower
+{
+  @sysvar::VTT::FanControlECU::IoHwAb::Adc = @sysvar::TestInterface::mapped_AdcPower;
+}
+
+on value_update FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle
+{
+  @sysvar::TestInterface::mapped_DrivingCycle = $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle;
+  
+}
+
+on sysvar_update sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle
+{
+  @sysvar::TestInterface::mapped_PwmDutyCycle = @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle;
+}

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Vector Test Table Editor-->
+<ttroot version="28" xmlns="http://www.vector-informatik.de/ITE/TestTable/1.0">
+  <tt>
+    <ts navid="d38661de-c3d4-451c-a3e2-c280bdc74c54">
+      <title>tts_FunctionInhibition</title>
+      <preparation>
+        <title />
+        <caplfunction>
+          <title />
+          <name>cf_InitState</name>
+        </caplfunction>
+        <caplfunction>
+          <title />
+          <name>cf_ClearFaultMemory</name>
+        </caplfunction>
+        <caplfunction>
+          <title />
+          <name>cf_RestartDrivingCycle</name>
+        </caplfunction>
+        <caplfunction>
+          <title />
+          <name>cf_CheckFailedPreconditon</name>
+        </caplfunction>
+      </preparation>
+      <capltestcase>
+        <title />
+        <name>ctc_MechanicalFaultFunctionInhibition</name>
+        <tcid>f7ef44f0-c49e-4958-805a-fa42bc6bb879</tcid>
+        <traceitems>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00022|END_OF_OBJECT_TraceItem|</traceitem>
+        </traceitems>
+        <variantdependencies>
+          <compare>
+            <value>
+              <dbobject>VarProp_BEGIN_OF_OBJECT|1|vTestExpectedToFail|END_OF_OBJECT_VarProp|</dbobject>
+            </value>
+            <eq>
+              <valuetable_entry>ExpectedToFail</valuetable_entry>
+            </eq>
+          </compare>
+        </variantdependencies>
+      </capltestcase>
+      <completion>
+        <title />
+        <caplfunction>
+          <title />
+          <name>cf_InitState</name>
+        </caplfunction>
+        <caplfunction>
+          <title />
+          <name>cf_ClearFaultMemory</name>
+        </caplfunction>
+        <caplfunction>
+          <title />
+          <name>cf_ResetDrivingCycle</name>
+        </caplfunction>
+      </completion>
+    </ts>
+  </tt>
+  <ttlib>
+    <ts_definitions />
+    <tc_definitions />
+    <function_definitions />
+  </ttlib>
+</ttroot>

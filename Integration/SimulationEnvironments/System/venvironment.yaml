@@ -1,0 +1,50 @@
+version: 1.1.0
+
+system-variables: 
+  - file-path: ../../../FanModel/TestInterface.vsysvar
+  - file-path: ../../FanControlECU/FanControl_CANoe/SysVar/VTT.vsysvar
+
+databases:
+  - name: Comfort
+    file-path: ../../../SystemDescription/CCA_SystemDescription.arxml
+    network-name: Comfort
+
+  - name: DriveTrain
+    file-path: ../../../SystemDescription/CCA_SystemDescription.arxml
+    network-name: DriveTrain
+
+  - name: Sensor
+    file-path: ../../../SystemDescription/CCA_SystemDescription.arxml
+    network-name: Sensor
+
+  - name: Connectivity
+    file-path: ../../../SystemDescription/CCA_SystemDescription.arxml
+    network-name: Connectivity
+
+can-networks:
+  - name: Comfort 
+    databases: 
+      - Comfort
+
+  - name: DriveTrain
+    databases: 
+      - DriveTrain
+    
+  - name: Sensor
+    databases: 
+      - Sensor
+
+ethernet-networks:
+  - name: Connectivity
+    databases: 
+      - Connectivity
+
+simulation-nodes:  
+  - name: Fan_ECU
+    network-assignments:
+      - network: Comfort
+        database-node:
+          node: Fan_ECU
+          database: Comfort
+    modeling-libraries:
+      - ../../FanControlECU/FanControl_VTT/SUT/Fan_ECU.vmodule

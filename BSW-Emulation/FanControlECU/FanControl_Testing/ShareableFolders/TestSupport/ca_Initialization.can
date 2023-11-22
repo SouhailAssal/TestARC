@@ -1,0 +1,44 @@
+/*@!Encoding:1252*/
+includes
+{
+  
+}
+
+variables
+{
+
+}
+
+export void cf_InitState() {
+  // Set a valid speed signal value
+  $FanControl::FanControlECU.PpSpeed.DeSpeed = 1750;
+  // reset test variables
+  @sysvar::TestInterface::OpenLoop = 0;
+  @sysvar::TestInterface::ShortCircuit = 0;
+  @sysvar::TestInterface::HighCurrent = 0;
+  @sysvar::TestInterface::LowCurrent = 0;
+  $FanControl::FanControlECU.CpApController.Event_Mechanical_Fault_Unexpected_High_Current.GetEventUdsStatus.AutoAnswerMode = _SystemDataTypes::VSIM::Auto;
+  $FanControl::FanControlECU.CpApController.Event_Mechanical_Fault_Unexpected_High_Current.GetEventUdsStatus.ParamDefaults.UDSStatusByte.phys = 0;
+  
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+}
+
+export void cf_CheckFailedPreconditon() {
+  cf_expectValueNe(1, @sysvar::TestInterface::OpenLoop,  "The system is in an Open Loop state!");
+  cf_expectValueNe(1, @sysvar::TestInterface::ShortCircuit,  "The system is in an Short Circuit state!");
+  cf_expectValueNe(1, @sysvar::TestInterface::HighCurrent,  "High Current detected!");
+  cf_expectValueNe(1, @sysvar::TestInterface::LowCurrent,  "Low Current detected!");
+  cf_expectValueNe(1, $FanControl::FanControlECU.PpFault.`DeFault,  "Fault signal is active!");
+}
+
+export void cf_ResetDrivingCycle(){
+  cf_RestartDrivingCycle();
+  $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle = 0;
+}
+
+export void cf_RestartDrivingCycle(){
+  $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle = 0;
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+  $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle = 1;
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+}
