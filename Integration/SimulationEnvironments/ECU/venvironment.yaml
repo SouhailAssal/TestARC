@@ -1,0 +1,49 @@
+version: 1.1.0
+
+system-variables: 
+  - file-path: ../../../FanModel/TestInterface.vsysvar
+  - file-path: ../../FanControlECU/FanControl_CANoe/SysVar/VTT.vsysvar
+
+databases:
+  - name: Comfort
+    file-path: ../../../SystemDescription/CCA_SystemDescription.arxml
+    network-name: Comfort
+
+can-networks:
+  - name: Comfort
+    databases:
+      - Comfort
+
+application-models:
+  - file-path: ../../FanControlECU/FanModel/SymbolMapping.can
+
+simulation-nodes:  
+  - name: Fan_ECU
+    network-assignments:
+      - network: Comfort
+        database-node:
+          node: Fan_ECU
+          database: Comfort
+    modeling-libraries:
+      - ../../FanControlECU/FanControl_VTT/SUT/Fan_ECU.vmodule
+  
+  - name: HeadUnit_ECU
+    network-assignments:
+      - network: Comfort
+        database-node:
+          node: HeadUnit_ECU
+          database: Comfort
+    modeling-libraries:
+      - AsrPDUIL.vmodule
+
+  - name: Fan_Model
+    file-path: ../../../FanModel/Fan.can
+    network-assignments:
+      - network: Comfort
+
+  - name: SignalDriver
+    network-assignments:
+      - network: Comfort
+        database-node:
+          node: VectorSimulationNode
+          database: Comfort

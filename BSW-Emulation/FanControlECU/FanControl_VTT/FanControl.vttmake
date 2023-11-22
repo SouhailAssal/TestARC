@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<BuildSpecification schemaVersion="5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="VttMakeFileSchema_5_0.xsd">
+    <BuildBswEmulatedSut>
+        <RootDir>.</RootDir>
+        <EcuName>FanControlECU</EcuName>
+
+        <SystemDescriptionFiles>
+            <File>../../../DeveloperConfig/Emulation/FanControl.arxml</File>
+        </SystemDescriptionFiles>
+
+        <Configuration>
+            <ComM>
+                <ChannelsAndUsers>
+                    <Channel Name="ComM_Channel" />
+                    <User Name="PpComMUserRequestCtApController">
+                        <MappedToAllChannels />
+                    </User>
+                </ChannelsAndUsers>
+            </ComM>
+            <Diagnostics>
+                <PassDiagnosticServicePortsToTestEnvironment>auto</PassDiagnosticServicePortsToTestEnvironment>
+            </Diagnostics>
+            <EcuM>  
+                <RunMinDuration>INF</RunMinDuration>
+            </EcuM>
+            <ServiceMappings>
+                <ServiceMapping>
+                    <Port>EcuSwComposition::CpApController::PpComMUserRequestCtApController</Port>
+                    <Value>PpComMUserRequestCtApController</Value>
+                </ServiceMapping>
+            </ServiceMappings>
+        </Configuration>
+
+        <ExecutionEnvironment>
+            <CommunicationInterface>DistributedObjects</CommunicationInterface>  
+        </ExecutionEnvironment>
+
+        <BuildSettings>
+            <SutOutputDir>SUT</SutOutputDir>
+        </BuildSettings>
+
+        <GenerateVcxProject>            
+            <VsTargetVersion>VS2019</VsTargetVersion>                         
+            <SourceFiles>                         
+                <File>../../../Source/CtApController.c</File>
+                <File>../../../Source/CtCddIoHwAb.c</File>
+            </SourceFiles>
+            <PreprocessorDefinitions>
+                <PreprocessorDefinition>VTT_ENABLE_CUSTOMVARS, VTT_BSW_EMULATION</PreprocessorDefinition>
+            </PreprocessorDefinitions>
+        </GenerateVcxProject>
+
+        <BuildVsSolution>
+            <!-- change path to the install path of build tools in the vtt container-->
+            <VsToolchainPath>C:\Program Files (x86)\Microsoft Visual Studio 16.0\MSBuild</VsToolchainPath>
+            <VsConfiguration>Debug</VsConfiguration>
+        </BuildVsSolution>
+        
+        <GenerateZip/>
+
+    </BuildBswEmulatedSut>
+</BuildSpecification>

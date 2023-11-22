@@ -1,0 +1,129 @@
+/*@!Encoding:1252*/
+includes
+{
+  
+}
+
+variables
+{
+
+}
+
+
+export cf_TriggerFaultEvent(int speed, int setOpenLoop, int setShortCircuit, int setHighCurrent, int setLowCurrent) {
+  float adc;
+  int fault;
+  float dutyCycle;
+  
+  testStep("1.0", "Set Speed = %d", speed);
+  $FanControl::FanControlECU.PpSpeed.DeSpeed = speed;
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+  
+  testStep("2.0", "Trigger Fault Event");
+  @sysvar::TestInterface::OpenLoop = setOpenLoop;
+  @sysvar::TestInterface::ShortCircuit = setShortCircuit;
+  @sysvar::TestInterface::HighCurrent = setHighCurrent;
+  @sysvar::TestInterface::LowCurrent = setLowCurrent;
+  
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+  
+  testStep("3.0","Check if fault signal is set");
+  fault = $FanControl::FanControlECU.PpFault.`DeFault;
+  cf_assertValueEq(1, fault, "Check Fault value");
+  
+  dutyCycle = @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle;
+  testStep("3.1", "Read Duty Cycle = %.0f", dutyCycle);
+  adc = @sysvar::VTT::FanControlECU::IoHwAb::Adc;
+  testStep("3.2", "Read corresponding ADC value  = %.2f", adc);
+}
+
+
+export testcase ctc_CheckDrivingCycleInformation() {
+  int speed = 1840;
+  int expectedPwm = 52.57;
+  
+  testStep("1.0", "Stop Driving Cycle and Set Speed = %d", speed);
+  $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle = 0;
+  $FanControl::FanControlECU.PpSpeed.DeSpeed = speed;
+  
+  testStep("1.1", "Expect no actuation of PWM");
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+  cf_assertValueEq(0, @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle, "Check PWM value");
+  
+  testStep("2.0", "Start Driving Cycle");
+  $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle = 1;
+  
+  testStep("2.1", "Expect PWM to be actuated");
+  cf_assertExitNotForTimeout(TestWaitForSignalMatch(sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle, expectedPwm, syspar::sourceCodeIterationTime));
+  cf_assertValueEq(expectedPwm, @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle, "Check PWM value");
+}
+
+
+export testcase ctc_CheckMechanicalFaultNotConfirmed_Actuation() {
+  int speed = 1750;
+  int expectedDutyCycle = 50;
+  
+  cf_assertValueNe(8, $FanControl::FanControlECU.CpApController.Event_Mechanical_Fault_Unexpected_High_Current.GetEventUdsStatus.LatestReturn.UDSStatusByte, "Mocked UDS Call");
+  
+  testStep("1.0", "Start Driving Cycle");
+  $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle = 1;
+  
+  cf_assertValueEq(0, $FanControl::FanControlECU.PpFault.`DeFault, "Check that no fault exists");
+  
+  testStep("1.1", "Set a pending DTC");
+  // UDS: 8 == Confirmed, 4 == Pending
+  $FanControl::FanControlECU.CpApController.Event_Mechanical_Fault_Unexpected_High_Current.GetEventUdsStatus.AutoAnswerMode = _SystemDataTypes::VSIM::Auto;
+  $FanControl::FanControlECU.CpApController.Event_Mechanical_Fault_Unexpected_High_Current.GetEventUdsStatus.ParamDefaults.UDSStatusByte.phys = 4;
+
+  testStep("1.2", "Set Speed = %d", speed);
+  $FanControl::FanControlECU.PpSpeed.DeSpeed = speed;
+  
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+  
+  testStep("1.3", "Check that fault signal is not set and Motor is actuated");
+  cf_assertValueEq(0, $FanControl::FanControlECU.PpFault.`DeFault, "Check that no fault exists");
+  cf_assertValueEq(expectedDutyCycle, @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle, "Check duty cycle value");
+}
+
+
+export testcase ctc_CheckMechanicalFaultConfirmed_NoActuation() {
+  int speed = 875;
+  int expectedDutyCycle = 0;
+  
+  testStep("1.0", "Start Driving Cycle");
+  $FanControl::FanControlECU.PpOBDdrivingCycle.DeOBDdrivingCycle = 1;
+  
+  cf_assertValueEq(0, $FanControl::FanControlECU.PpFault.`DeFault, "Check that no fault exists");
+  
+  testStep("1.1", "Set a confirmed DTC");
+  // UDS: 8 == Confirmed, 4 == Pending
+  $FanControl::FanControlECU.CpApController.Event_Mechanical_Fault_Unexpected_High_Current.GetEventUdsStatus.AutoAnswerMode = _SystemDataTypes::VSIM::Auto;
+  $FanControl::FanControlECU.CpApController.Event_Mechanical_Fault_Unexpected_High_Current.GetEventUdsStatus.ParamDefaults.UDSStatusByte.phys = 8;
+
+  testStep("1.2", "Set Speed = %d", speed);
+  $FanControl::FanControlECU.PpSpeed.DeSpeed = speed;
+  
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+  
+  testStep("1.3", "Check that fault signal is set and Motor is not actuated");
+  cf_assertValueEq(1, $FanControl::FanControlECU.PpFault.`DeFault, "Check that fault exists"); // EDSG-00025
+  cf_assertValueEq(expectedDutyCycle, @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle, "Check duty cycle value");
+}
+
+
+export void cf_SpeedPwmValidation(int speed) {
+  int expectedPWM;
+  expectedPWM = ((speed * syspar::maxPwm) / syspar::maxSpeed) * 100 / syspar::maxPwm;
+  
+  testStep("1.0", "Set Speed = %d [rpm]", speed);
+  $FanControl::FanControlECU.PpSpeed.DeSpeed = speed;
+  testWaitForTimeout(syspar::sourceCodeIterationTime);
+  
+  testStep("1.1", "Read PWM Duty Cycle = %d [%%]", @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle);
+  cf_assertValueEq(expectedPWM, @sysvar::VTT::FanControlECU::IoHwAb::PwmDutyCycle, "Check duty cycle value");
+  
+  testStep("1.2", "Read ADC = %.2f [V]", @sysvar::VTT::FanControlECU::IoHwAb::Adc);
+  
+  testStep("1.3", "Check that fault signal is not set");
+  cf_assertValueEq(0, $FanControl::FanControlECU.PpFault.`DeFault, "Check that no fault exists");
+}

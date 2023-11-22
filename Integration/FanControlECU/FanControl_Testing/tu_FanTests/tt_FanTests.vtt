@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Vector Test Table Editor-->
+<ttroot version="28" xmlns="http://www.vector-informatik.de/ITE/TestTable/1.0">
+  <tt>
+    <ts navid="53c10aa6-d191-436f-ac63-72138e5e13b4">
+      <title>tts_CheckPWMToSetpointSpeed</title>
+      <variantdependencies>
+        <compare>
+          <value>
+            <dbobject>VarProp_BEGIN_OF_OBJECT|1|vTestExpectedToFail|END_OF_OBJECT_VarProp|</dbobject>
+          </value>
+          <eq>
+            <valuetable_entry>ExpectedToSucceed</valuetable_entry>
+          </eq>
+        </compare>
+      </variantdependencies>
+      <preparation>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_PrepareTest</name>
+        </ttfunction>
+      </preparation>
+      <capltestcase>
+        <title />
+        <name>ctc_CheckPWMToSetpointSpeed</name>
+        <tcid>fef12153-0e2a-4d24-b39d-dbb1b71d04d8</tcid>
+        <traceitems>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00010|END_OF_OBJECT_TraceItem|</traceitem>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00011|END_OF_OBJECT_TraceItem|</traceitem>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00009|END_OF_OBJECT_TraceItem|</traceitem>
+        </traceitems>
+      </capltestcase>
+      <completion>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_CompleteTest</name>
+        </ttfunction>
+      </completion>
+    </ts>
+    <ts navid="621ed419-78c1-4e9f-9d50-9817fc6079b6">
+      <title>tts_CheckCyclicTime</title>
+      <variantdependencies>
+        <compare>
+          <value>
+            <dbobject>VarProp_BEGIN_OF_OBJECT|1|vTestExpectedToFail|END_OF_OBJECT_VarProp|</dbobject>
+          </value>
+          <eq>
+            <valuetable_entry>ExpectedToSucceed</valuetable_entry>
+          </eq>
+        </compare>
+      </variantdependencies>
+      <preparation>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_PrepareTest</name>
+        </ttfunction>
+      </preparation>
+      <capltestcase>
+        <title />
+        <active>true</active>
+        <name>ctc_CheckCycleTime</name>
+        <tcid>83f7496c-a505-4e0a-ba6e-8c9e9cfe83f1</tcid>
+        <traceitems>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00028|END_OF_OBJECT_TraceItem|</traceitem>
+        </traceitems>
+      </capltestcase>
+      <completion>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_CompleteTest</name>
+        </ttfunction>
+      </completion>
+    </ts>
+    <ts navid="962b8649-b8fb-41fc-a4fe-ffc2c08bdc29">
+      <title>tts_CheckDrivingCycleInformation</title>
+      <variantdependencies>
+        <compare>
+          <value>
+            <dbobject>VarProp_BEGIN_OF_OBJECT|1|vTestExpectedToFail|END_OF_OBJECT_VarProp|</dbobject>
+          </value>
+          <eq>
+            <valuetable_entry>ExpectedToSucceed</valuetable_entry>
+          </eq>
+        </compare>
+      </variantdependencies>
+      <preparation>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_PrepareTest</name>
+        </ttfunction>
+      </preparation>
+      <comment>
+        <title>This testcase does not directly trace a specification. Tests a resulting behavior from implementing EDSG-00123, EDSG-00025, EDSG-00173, EDSG-00138</title>
+      </comment>
+      <capltestcase>
+        <title>
+        </title>
+        <name>ctc_CheckDrivingCycleInformation</name>
+        <tcid>abbaed60-976a-4fc1-9ad7-9751eb252f40</tcid>
+        <traceitems>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00178|END_OF_OBJECT_TraceItem|</traceitem>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00137|END_OF_OBJECT_TraceItem|</traceitem>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00025|END_OF_OBJECT_TraceItem|</traceitem>
+        </traceitems>
+      </capltestcase>
+      <completion>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_CompleteTest</name>
+        </ttfunction>
+      </completion>
+    </ts>
+    <ts navid="29d8adf0-2a21-4039-9eee-c9ddd389f619">
+      <title>tts_MotorCurrentDrawObservation</title>
+      <variantdependencies>
+        <compare>
+          <value>
+            <dbobject>VarProp_BEGIN_OF_OBJECT|1|vTestExpectedToFail|END_OF_OBJECT_VarProp|</dbobject>
+          </value>
+          <eq>
+            <valuetable_entry>ExpectedToSucceed</valuetable_entry>
+          </eq>
+        </compare>
+      </variantdependencies>
+      <preparation>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_PrepareTest</name>
+        </ttfunction>
+      </preparation>
+      <capltestcase>
+        <title />
+        <name>ctc_MotorCurrentDrawObservation</name>
+        <tcid>b83644d2-c6ce-430d-86c0-49b8561b29ec</tcid>
+        <traceitems>
+          <traceitem>TraceItem_BEGIN_OF_OBJECT|1|EDSG-00012|END_OF_OBJECT_TraceItem|</traceitem>
+        </traceitems>
+      </capltestcase>
+      <completion>
+        <title />
+        <ttfunction>
+          <title />
+          <name>ttf_CompleteTest</name>
+        </ttfunction>
+      </completion>
+    </ts>
+  </tt>
+  <ttlib>
+    <ts_definitions />
+    <tc_definitions />
+    <function_definitions>
+      <function_definition navid="0559151d-61d1-4374-b5a8-192de3b01b03">
+        <name>ttf_PrepareTest</name>
+        <parameters />
+        <caplinline>
+          <title />
+          <code>cf_InitState();
+cf_RestartDrivingCycle();
+cf_CheckFailedPreconditon();</code>
+        </caplinline>
+      </function_definition>
+      <function_definition navid="0b28bb07-abdc-4a18-9497-a35692e36932">
+        <name>ttf_CompleteTest</name>
+        <parameters />
+        <caplinline>
+          <title />
+          <code>cf_InitState();
+cf_ResetDrivingCycle();</code>
+        </caplinline>
+      </function_definition>
+    </function_definitions>
+  </ttlib>
+</ttroot>

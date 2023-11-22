@@ -1,0 +1,24 @@
+version: 1.1.0
+
+system-variables:
+  - file-path: ..\..\FanControlECU\FanControl_Canoe\SysVar\VTT.vsysvar
+
+datasources:
+  input-files:
+    - file-path: ..\..\..\FanControlECU-SUT\SUT\FanControlECU.vCODM
+    - file-path:  ..\..\..\HeadUnitECU-SUT\SUT\HeadUnitECU.vCODM  
+    - file-path:  ..\..\..\BatteryManagementECU-SUT\SUT\BatteryManagementECU.vCODM
+    - file-path:  ..\..\..\CCAFolder\CCAECU\Vcdl\PhysicalModel.vcdl
+
+application-models:
+  - file-path: ..\..\..\FanControlECU-SUT\SUT\FanControlECU.vModule
+  - file-path:  ..\..\..\HeadUnitECU-SUT\SUT\HeadUnitECU.vModule
+  - file-path:  ..\..\..\BatteryManagementECU-SUT\SUT\BatteryManagementECU.vModule
+
+  - file-path: ..\..\FanControlECU\FanModel\Fan.can
+  - file-path:  ..\..\..\CCAFolder\CCAECU\CaplFiles\Battery.can
+  - file-path:  ..\..\..\CCAFolder\CCAECU\CaplFiles\Fan.can
+  - file-path:  ..\..\..\CCAFolder\CCAECU\CaplFiles\ACECU.can
+  - file-path:  ..\..\..\CCAFolder\CCAECU\CaplFiles\SeatECU.can
+  - file-path:  ..\..\..\CCAFolder\CCAECU\CaplFiles\SteeringECU.can
+  - file-path:  ..\..\..\CCAFolder\CCAECU\CaplFiles\PhysicalModel.can

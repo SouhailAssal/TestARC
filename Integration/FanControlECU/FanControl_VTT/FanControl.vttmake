@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<BuildSpecification schemaVersion="4.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="VttMakeFileSchema_4_1.xsd">
+    <Settings>
+        <RootDir>..\FanControl_ECU</RootDir>
+    </Settings>
+    <BuildDpa>
+        <DpaPath>.\FanControl.dpa</DpaPath>
+        <VsSolutionPath>..\FanControl_VTT\Solution\FanControl.sln</VsSolutionPath>
+
+        <BuildSettings>
+            <VerboseLevel>High</VerboseLevel>
+            <SutOutputDir>..\FanControl_VTT\SUT</SutOutputDir>
+        </BuildSettings>
+
+        <!-- Generates the code of all RTE modules in Vector DaVinci Configurator. -->
+        <GenerateRte />
+        <!-- Generates the code of all configured Basic Software (BSW) modules in Vector DaVinci Configurator. -->
+        <GenerateBsw />
+
+        <GenerateVcxProject>
+            <VsTargetVersion>VS2019</VsTargetVersion>
+            <TargetPlatform>Windows_x86</TargetPlatform>
+            <SourceFiles>
+                <!-- Define source files with glob patterns -->
+                <File>Appl\Source\Main.c</File>
+                <File>Appl\Source\Dcm_Callout_Stubs.c</File>
+                <File>..\..\..\Source\CtApController.c</File>
+                <File>..\..\..\Source\CtCddIoHwAb.c</File>
+            </SourceFiles>
+
+            <IncludeFolders>
+                <IncludeFolder>Appl\Source</IncludeFolder>
+                <IncludeFolder>Appl\Include</IncludeFolder>
+                <IncludeFolder>Appl\GenDataVtt</IncludeFolder>
+            </IncludeFolders>
+        </GenerateVcxProject>
+
+        <BuildVsSolution>
+            <!-- change path to the install path of build tools in the vtt container-->
+            <VsToolchainPath>C:\Program Files (x86)\Microsoft Visual Studio 16.0\MSBuild</VsToolchainPath>
+            <VsConfiguration>Debug</VsConfiguration>
+        </BuildVsSolution>
+        <GenerateZip />
+    </BuildDpa>
+
+</BuildSpecification>
