@@ -54,6 +54,7 @@ jobs:
           
   compile-tests:
     runs-on: canoe-17.3.91
+    needs: build-sut
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
