@@ -359,6 +359,22 @@
             </AR-PACKAGE>
           </AR-PACKAGES>
         </AR-PACKAGE>
+        <AR-PACKAGE UUID="66d50947-95f8-416f-a241-0b4efd6d71aa">
+          <SHORT-NAME>CanTrcv_30_Tja1043_ib_bswmd</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE UUID="d1d606b3-be1d-46df-b684-fe50ea0ceffd">
+              <SHORT-NAME>XcpEvents</SHORT-NAME>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
+        <AR-PACKAGE UUID="e5de9b18-5988-481c-b916-9e9b49448be7">
+          <SHORT-NAME>CanTrcv_ib_bswmd</SHORT-NAME>
+          <AR-PACKAGES>
+            <AR-PACKAGE UUID="6e31f289-069b-4991-8fe0-168435915e8a">
+              <SHORT-NAME>XcpEvents</SHORT-NAME>
+            </AR-PACKAGE>
+          </AR-PACKAGES>
+        </AR-PACKAGE>
         <AR-PACKAGE UUID="3f5bc6c2-cd46-445c-a6f1-8db0259b1ac4">
           <SHORT-NAME>ComM_ib_bswmd</SHORT-NAME>
           <AR-PACKAGES>

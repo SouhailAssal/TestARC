@@ -5,32 +5,33 @@ Hello, and welcome to the CI-Demo-Repository.
 ## Table of Contents
 
 - [Introduction](#introduction)
-- [Dependencies](#dependencies)
-- [Repository Layout](#repository-layout)
-- [Pipeline Overview](#pipeline-overview)
-- [Trigger the pipeline](#trigger-the-pipeline)
-- [View the pipeline](#view-the-pipeline)
+- [Repository-Layout](#repository-layout)
+- [ECU](./ECU/readme.md)
+- [Pipeline-Overview](#pipeline-overview)
+- [Trigger-the-pipeline](#trigger-the-pipeline)
+- [View-the-pipeline](#view-the-pipeline)
 - [Remarks](#remarks)
 
-## Introduction
-
-In an ever growing and more complex world, CI / CD solutions are key to develop and provide fast and reliable software solutions. By combining the work of the whole team in one repository and automatically test the changes, CI / CD provides fast testing and change feedback.
-This repository should give you a peek into the capabilities of vector tools in a CI context. Starting with the changes of C-Code for an ECU, triggering the whole compilation and testing of the virtual ECU. Leading to test-reports, showing you if your changes broke some tests or functionality of your ECU.
-
-In this demo repository, you can take action, by editing the C Files under [/ECU/Appl/](/ECU/Appl/) to trigger the attached CI pipeline and see the Vector Tools in action.
-Afterwards you can observe the test-results and see, if you changes broke some tests.
 ## Dependencies
 
 - internet connection
 
-## Repository Layout
+## Introduction
+
+In an ever growing and more complex world, CI / CD solutions are key to develop and provide fast and reliable software solutions.  By combining the work of the whole team in one repository and automatically test the changes, CI / CD provides fast testing and change feedback.
+This repository should give you a small peak into the capabilities of vector tools in a CI context. Starting on the changes of C-Code for an ECU. Triggering the whole compilation and testing of the virtual ECU. Leading to test-reports, showing you if your changes broke some tests or functionality of your ECU.
+
+In this demo repository, you can take action, by editing the C Files under [/ECU/Appl/Source](/ECU/Appl/Source) (recommend LightCtrl.c ), to trigger the attached CI pipeline and see the Vector Tools in action.
+Afterwards you can observe the test-results and see, if you changes broke some tests.
+
+## Repository-Layout
 
 - [environment-make](/environment-make/) contains all files to run CANoe Make. Most importantly the `LightControl.venvironment.yaml` file, which describes the CANoe4SW SE setup.
 - [doc](/doc/) contains documentation and additional infos.
 - [ECU](/ECU/) contains the source code for the virtual ECU, which gets tested in this demo pipeline.
 - [test](/test/) contains all files to run Test Unit Make and the report styles to transform the test reports into xunit.
 
-## Pipeline Overview
+## Pipeline-Overview
 
 <div class="table" align="center">
 
@@ -52,7 +53,7 @@ graph TD
 The pipeline file is located in another directory to prevent non authorized changes.
 To view it, [click here](https://asrvecucidemo.lets-try.tools.vector-worldwide.com/prod-test/ci-lightctrl-pipeline/-/blob/main/.gitlab-ci.yml)
 
-## Trigger the pipeline
+## Trigger-the-pipeline
 
 There are two ways, on how to trigger the pipeline. The first and easy way, is to use the GitLab provided webeditor.
 The second one is to use the git command-line tool. For this option, follow the instructions [here](/doc/trigger-with-git.md)
@@ -70,7 +71,7 @@ To trigger the pipeline, using the webeditor, do the following steps:
 
 4. On the bottom of the page, is an entry box, to edit the commit message. Write in text here as you like, and afterwards click the "Commit changes" button.
 
-## View the pipeline
+## View-the-pipeline
 
 To see the pipeline working and the CANoe4SW_SE Test-Report:
 
@@ -83,8 +84,7 @@ To see the pipeline working and the CANoe4SW_SE Test-Report:
 
 ```
 
-For an image based guide, [click here](/doc/view-pipeline-and-tests.md)</br>
-More details about the functionality of Vector Tools inside the pipeline can be viewed [here](/doc/pipeline.md).
+For an image based guide, [click here](/doc/view-pipeline-and-tests.md)
 
 ## Remarks
 

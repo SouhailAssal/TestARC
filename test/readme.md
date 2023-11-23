@@ -18,5 +18,3 @@ In test-units, there are two files, which contain the following tests.
 - basic:
     - CheckTurnOn -> Check turning on the light.
     - CheckTurnOff -> Check turning off the light.
-
-The LightControl.vtsoproj file is created using **vTestStudio**. In order to edit tests or create more test units, this file must be opened in vTest Studio and test units can be added/ edited throguh CAPL, C# files,  State Diagram and more.</br>

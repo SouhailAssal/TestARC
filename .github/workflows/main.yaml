@@ -1,26 +1,15 @@
 name: call-workflow
 
-on:
-  push:
-    branches:
-      - 'main'
-  pull_request:
-  workflow_dispatch:
+on: [push,pull_request, workflow_dispatch] 
+
+
 
 jobs:
   build-sut:
     runs-on: vtt-6.3.56
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: update Microsar-SIP via SVN
-        shell: powershell 
-        run: |
-          Write-Host "Before svn update:"
-          ls
-          ${{ github.workspace }}/.github/scripts/get-repo.ps1 -configFile "${{ github.workspace }}/microsar-sip-svn-config.json" -SvnUser "${{ secrets.SVN_USER }}" -SvnPassword "${{ secrets.SVN_PASSWORD }}"
-          Write-Host "Result:"
-          ls
+        uses: actions/checkout@v2
       - name: Run DaVinci & VTT
         run: |
             VttMake make ./ECU/LightControl.vttmake;
@@ -30,7 +19,7 @@ jobs:
               Exit -1
             }       
       - name: Export ECU/SUT
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         env: 
           http_proxy: ""
           https_proxy: "" 
@@ -42,15 +31,16 @@ jobs:
         run : ls ECU/SUT/
           
   compile-tests:
+    if: always()
     needs: build-sut
     runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Compile tests
         run : TestUnitBuildCLI ./test/vTeststudio/LightControl.vtsoproj
       - name: Export compiled tests
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         env: 
           http_proxy: ""
           https_proxy: "" 
@@ -63,56 +53,48 @@ jobs:
 
           
   compile-simulation:
+    if: always()
     needs: compile-tests
     runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      
+        uses: actions/checkout@v2
       - name: Fetch SUT Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: SUT
-          path: ECU/SUT     
+          path: ECU/SUT        
         env:
           http_proxy: ""
           https_proxy: ""
       - name: Fetch test artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: Compiled tests
-          path: test/vTESTstudio  
+          path: test/vTESTstudio       
         env:
           http_proxy: ""
           https_proxy: ""
-      # if a previous workflow run aborts due to error before the 'clean temporary folder' step can run, the cleaning at the end is ommitted,
-      # thus we make sure this temp folder space is clean even in this case:
-      - name: clean temporary folder 
-        run:  if (Test-Path -LiteralPath C:/LightControl_temp) { rmdir C:/LightControl_temp -Force  -Recurse }
-      - name: Copy workspace contents to shorter path
-        shell: powershell 
-        run: Copy-Item -Path "C:/actions-runner/_work/cdevops-light-control-upstream/cdevops-light-control-upstream" -Destination "C:/LightControl_temp" -Recurse -Force
-      - name: Compile simulation
-        working-directory: "C:/LightControl_temp"
+      - name: Run pipeline scripts
         run: |
-            environment-make -o ./environment-make -A Win32 ./environment-make/venvironment.yaml;
-            test-unit-make -e ./environment-make/Default.venvironment -o ./environment-make/ ./test/vTestStudio/basic/basic.vtuexe ./test/vTestStudio/auto/auto.vtuexe;
-      - name: Copy contents from C:/LightCtrl to workspace
-        shell: powershell
-        run: Copy-Item -Path "C:/LightControl_temp" -Destination "C:/actions-runner/_work/cdevops-light-control-upstream/cdevops-light-control-upstream"  -Recurse -Force
+          .\.github\scripts\copyNodeLayers.ps1
+          .\.github\scripts\copyVtuexeFiles.ps1
+      - name: Compile simulation
+        run: |
+            environment-make -o ./environment-make/lightcontrol_scenario.vscenario -A Win32 ./environment-make/LightControl.venvironment.yaml;
+            test-unit-make -e ./environment-make/lightcontrol_scenario.vscenario/Default.venvironment -o ./environment-make/ ./test/test-units;
       - name: Export environment-make
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         env: 
           http_proxy: ""
           https_proxy: "" 
         with:
           name: environment-make
-          path: ./LightControl_temp/environment-make/
+          path: ./environment-make/
           retention-days: 7
-      - name: clean temporary folder
-        run:  rmdir C:/LightControl_temp -Force  -Recurse
- 
+
   run-tests-simulation:
+    if: always()
     needs: compile-simulation
     runs-on: canoe-17.3.91
     strategy:
@@ -120,9 +102,9 @@ jobs:
         TESTNAME: [auto.vtestunit, basic.vtestunit]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Fetch SUT Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: SUT
           path: ECU/SUT        
@@ -130,7 +112,7 @@ jobs:
           http_proxy: ""
           https_proxy: ""
       - name: Fetch venvironment artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: environment-make
           path: environment-make        
@@ -138,17 +120,24 @@ jobs:
           http_proxy: ""
           https_proxy: ""
       - name: Fetch test artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: Compiled tests
           path: test/vTESTstudio       
         env:
           http_proxy: ""
           https_proxy: ""
+      - name : check where downloaded artifacts are.
+        run : |
+          ls
+          ls ECU/SUT
+          ls environment-make/
+          ls environment-make/lightcontrol_scenario.vscenario
+          ls test/vTESTstudio/auto
       - name: run_canoe
         id: canoe
         run : |
-          & canoe4sw-se ./environment-make/Default.venvironment -d ./test-${{ matrix.TESTNAME }} --win32 --port-rtk-api none --test-unit ./environment-make/${{ matrix.TESTNAME }};
+          & canoe4sw-se ./environment-make/lightcontrol_scenario.vscenario/Default.venvironment -d ./test-${{ matrix.TESTNAME }} --win32 --port-rtk-api none --test-unit ./environment-make/${{ matrix.TESTNAME }};
           echo "The last exit code is  $LASTEXITCODE"
       - name: Copy Test Results
         if: always()
@@ -165,7 +154,7 @@ jobs:
           }
       - name: Export Test Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         env: 
           http_proxy: ""
           https_proxy: "" 
@@ -177,14 +166,14 @@ jobs:
           retention-days: 7
 
   display-test-report:
-    if: ${{ !cancelled() }}
+    if: always()
     needs: run-tests-simulation
     runs-on: canoe-17.3.91
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Fetch testreport artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: Test Reports
           path: TestReports/        
@@ -199,18 +188,18 @@ jobs:
           cscript.exe ./test/report-styles/xunit/xUnitTransform.vbs ./TestReports/TestReports/basic.xml ./TestReports/TestReports/basic_xunit.xml;
 
       - name: Export Test Reports in XML
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         env: 
           http_proxy: ""
           https_proxy: "" 
         with:
           name: Test Reports in XML
           path: |
-            ./TestReports/TestReports/auto_xunit.xml
-            ./TestReports/TestReports/basic_xunit.xml
-            ./TestReports/TestReports/*.vtestreport
+            ./TestReports/auto_xunit.xml
+            ./TestReports/basic_xunit.xml
+            ./TestReports/*.vtestreport
           retention-days: 7
-      - uses: dorny/test-reporter@v1.6.0
+      - uses: dorny/test-reporter@v1.5.0
         with:
           fail-on-error: "false"
           name: CANoe4SW_SE Tests                   # Name of the check run which will be created
