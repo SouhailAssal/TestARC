@@ -196,6 +196,8 @@ jobs:
           name: CANoe4SW_SE Tests                   # Name of the check run which will be created
           path: "./TestReports/*_xunit.xml"  # Path to test results
           reporter: java-junit                      # Format of test results
+          permissions:
+            checks: write
         env:
           # Explicitly disable the Proxy, as NODE seems to ignore no_proxy
           http_proxy: ""
