@@ -11,6 +11,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Move Sip
+        shell: powershell
+        run : |
+          # Ensure the destination directory exists
+          $destination = ".\Sip"
+          if (-not (Test-Path $destination)) {
+            New-Item -ItemType Directory -Path $destination
+          }
+          Move-Item -Path "C:\Microsar-Sip\*" -Destination $destination
       - name: Run DaVinci & VTT
         run: |
             VttMake make ./ECU/LightControl.vttmake;
