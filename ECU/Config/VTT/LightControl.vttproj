@@ -185,7 +185,7 @@
     <SipData z:Id="98">
       <CBD z:Id="99">CBD0000000</CBD>
       <DeliveryNumber>0</DeliveryNumber>
-      <Path z:Id="100">&lt;VFileName v="V5" f="BQL" init="1" base="cfg" name="C:\Microsar-SIP" /&gt;</Path>
+      <Path z:Id="100">&lt;VFileName v="V5" f="BQL" init="1" base="cfg" name=".\SIP" /&gt;</Path>
       <SipVersion z:Id="101">28.7.3</SipVersion>
       <VttGeneratorVersion z:Id="102"></VttGeneratorVersion>
     </SipData>
