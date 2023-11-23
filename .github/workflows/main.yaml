@@ -75,10 +75,6 @@ jobs:
         env:
           http_proxy: ""
           https_proxy: ""
-      - name: Run pipeline scripts
-        run: |
-          .\.github\scripts\copyNodeLayers.ps1
-          .\.github\scripts\copyVtuexeFiles.ps1
       - name: Compile simulation
         run: |
             environment-make -o ./environment-make/lightcontrol_scenario.vscenario -A Win32 ./environment-make/LightControl.venvironment.yaml;
