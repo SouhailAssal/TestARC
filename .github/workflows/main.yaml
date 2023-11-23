@@ -2,8 +2,6 @@ name: call-workflow
 
 on:
   push:
-    branches:
-      - 'main'
   pull_request:
   workflow_dispatch:
 
